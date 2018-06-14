@@ -26,6 +26,7 @@ def read_temp():
         temp_c = float(temp_string) / 1000.0
         return temp_c
 
+logging.basicConfig(filename='tempLog.log', level=logging.INFO)
 while True:
     logging.info(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + read_temp())
     time.sleep(1) # reading takes about 1 sec
