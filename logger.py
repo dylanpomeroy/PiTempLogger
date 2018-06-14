@@ -27,5 +27,5 @@ def read_temp():
         return temp_c
 
 while True:
-    logging.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + read_temp())
+    logging.info(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + read_temp())
     time.sleep(1) # reading takes about 1 sec
