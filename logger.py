@@ -2,7 +2,12 @@ import os
 import glob
 import time
 import logging
-import datetime
+
+from splunk_http_event_collector import http_event_collector
+splunkHECKey = "7f75b2f2-2b0c-41c9-b9ac-beeec40f7410"
+splunkHECHost = "192.168.2.11"
+eventSender = http_event_collector(splunkHECKey, splunkHECHost)
+
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 base_dir = '/sys/bus/w1/devices/'
@@ -28,5 +33,12 @@ def read_temp():
 
 logging.basicConfig(filename='tempLog.log', level=logging.INFO)
 while True:
-    logging.info(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " " + str(read_temp()))
+    eventSender.sendEvent({
+        "index": "main",
+        "sourcetype": "Temperature",
+        "source": "Apartment Temperature Reader",
+        "host": "Pi",
+        "event": { "Temp": read_temp() }
+    })
+    
     time.sleep(1) # reading takes about 1 sec
